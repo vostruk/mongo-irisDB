@@ -3,9 +3,13 @@ package pl.comp.datalog.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import pl.comp.datalog.dto.FactDTO;
+import pl.comp.datalog.dto.RuleDTO;
+import pl.comp.datalog.model.Fact;
 import pl.comp.datalog.model.Rule;
 import pl.comp.datalog.repository.RuleRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,14 +23,14 @@ public class RuleController {
 
     @ResponseBody
     @RequestMapping(path = "/api/rules", method = RequestMethod.POST, produces = "application/json")
-    public Rule addRule(@RequestBody Rule rule) {
-        return ruleRepository.insert(rule);
+    public RuleDTO addRule(@RequestBody RuleDTO rule) {
+        return new RuleDTO(ruleRepository.insert(new Rule(rule)));
     }
 
     @ResponseBody
     @RequestMapping(path = "/api/rules", method = RequestMethod.PUT,  produces = "application/json")
-    public Rule updateRule(@RequestBody Rule rule) {
-        return ruleRepository.save(rule);
+    public RuleDTO updateRule(@RequestBody RuleDTO rule) {
+        return new RuleDTO(ruleRepository.save(new Rule(rule)));
     }
 
     @ResponseBody
@@ -37,14 +41,18 @@ public class RuleController {
 
     @ResponseBody
     @RequestMapping(path = "/api/rules", method = RequestMethod.GET, produces = "application/json")
-    public List<Rule> getRules() {
-        return ruleRepository.findAll();
+    public List<RuleDTO> getRules() {
+        List<RuleDTO> results = new ArrayList<>();
+        for (Rule rule : ruleRepository.findAll()) {
+            results.add(new RuleDTO(rule));
+        }
+        return results;
     }
 
     @ResponseBody
     @RequestMapping(path = "/api/rules/{id}", method = RequestMethod.GET, produces = "application/json")
-    public Rule getRuleById(@PathVariable String id) {
-        return ruleRepository.findById(id);
+    public RuleDTO getRuleById(@PathVariable String id) {
+        return new RuleDTO(ruleRepository.findById(id));
     }
 
 

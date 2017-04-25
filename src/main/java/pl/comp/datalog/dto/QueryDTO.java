@@ -1,19 +1,19 @@
-package pl.comp.datalog.model;
+package pl.comp.datalog.dto;
 
 /**
  * Created by Damian Ratajczak
  */
-public class Query {
+public class QueryDTO {
 
     private String value;
     private String result;
 
-    public Query(String value, String result) {
+    public QueryDTO(String value, String result) {
         this.value = value;
         this.result = result;
     }
 
-    public Query() {
+    public QueryDTO() {
     }
 
     /**

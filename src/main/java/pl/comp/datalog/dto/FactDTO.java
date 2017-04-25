@@ -1,30 +1,26 @@
-package pl.comp.datalog.model;
+package pl.comp.datalog.dto;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-import pl.comp.datalog.dto.RuleDTO;
+import pl.comp.datalog.model.Fact;
 
 /**
  * Created by Damian Ratajczak
  */
-@Document(collection = "rule")
-public class Rule {
+public class FactDTO {
 
-    @Id
     private String id;
     private String value;
 
-    public Rule(String id, String value) {
+    public FactDTO(String id, String value) {
         this.id = id;
         this.value = value;
     }
 
-    public Rule() {
+    public FactDTO() {
     }
 
-    public Rule(RuleDTO ruleDTO) {
-        this.id = ruleDTO.getId();
-        this.value = ruleDTO.getValue();
+    public FactDTO(Fact fact) {
+        this.id = fact.getId();
+        this.value = fact.getValue();
     }
 
     /**

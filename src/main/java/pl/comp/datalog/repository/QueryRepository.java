@@ -1,12 +1,12 @@
 package pl.comp.datalog.repository;
 
 
-import pl.comp.datalog.model.Query;
+import pl.comp.datalog.dto.QueryDTO;
 
 /**
  * Created by Damian Ratajczak
  */
 public interface QueryRepository {
 
-    Query resolve(Query query);
+    QueryDTO resolve(QueryDTO query);
 }
