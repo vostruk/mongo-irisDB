@@ -1,0 +1,8 @@
+/* You can add global styles to this file, and also import other style files */
+.remove-object {
+  color: #6f6f6f;
+}
+.remove-object:hover {
+  color: #000000;
+  cursor: pointer;
+}

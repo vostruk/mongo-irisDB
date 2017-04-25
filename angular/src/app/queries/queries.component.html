@@ -1,0 +1,13 @@
+<div class="panel panel-success">
+  <div class="panel-heading">
+    <h3 class="panel-title">Zapytanie</h3>
+  </div>
+  <div class="panel-body">
+    <input
+      type="text"
+      class="form-control"
+      [(ngModel)] = "query.value">
+    <button class="btn btn-success" style="margin-top: 10px;" [disabled] = "!canResolveQuery()" (click)="resolveQuery()">Wykonaj zapytanie</button>
+    <h4 *ngIf="displayResult()" style="margin-top: 10px;">Wynik: {{ query.result }}</h4>
+  </div>
+</div>

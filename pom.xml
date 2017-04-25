@@ -61,6 +61,21 @@
 
     <build>
         <plugins>
+            <!--<plugin>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.0.0</version>
+                <configuration>
+                    <resource>
+                        &lt;!&ndash; this is relative to the pom.xml directory &ndash;&gt;
+                        <directory>src/main/resources</directory>
+                        &lt;!&ndash; there's no default value for this &ndash;&gt;
+                        <excludes>
+                            <exclude>**/web</exclude>
+                            <exclude>**/web</exclude>
+                        </excludes>
+                    </resource>
+                </configuration>
+            </plugin>-->
             <!--<plugin>-->
                 <!--<groupId>org.springframework.boot</groupId>-->
                 <!--<artifactId>spring-boot-maven-plugin</artifactId>-->

@@ -37,7 +37,7 @@ public class FactController {
 
     @ResponseBody
     @RequestMapping(path = "/api/facts", method = RequestMethod.GET, produces = "application/json")
-    public List<Fact> getfacts() {
+    public List<Fact> getFacts() {
         return factRepository.findAll();
     }
 

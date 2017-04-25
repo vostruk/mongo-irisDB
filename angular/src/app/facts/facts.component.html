@@ -1,0 +1,29 @@
+<div class="panel panel-default" style="border-color: #a5a5a5;">
+  <div class="panel-heading" style="background-color: #bfbfbf;">
+    <h3 class="panel-title">Fakty</h3>
+  </div>
+  <div class="panel-body">
+    <table class="table">
+      <thead class="thead-inverse">
+      <tr>
+        <th>#</th>
+        <th>Treść</th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let fact of facts; let i = index">
+        <th scope="row" style="width: 10%;">{{i + 1}}</th>
+        <td>{{fact.value}}</td>
+        <td>
+          <a (click)="removeFact(fact)" class="pull-right remove-object">
+            <i class="glyphicon glyphicon-trash"></i>
+          </a>
+        </td>
+      </tr>
+
+      <a class="btn btn-default" style="margin-top: 10px; border-color: #a5a5a5;" (click)="openAddFactDialog()">Dodaj fakt</a><br />
+      </tbody>
+    </table>
+  </div>
+</div>

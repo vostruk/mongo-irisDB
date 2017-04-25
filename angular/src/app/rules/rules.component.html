@@ -1,0 +1,29 @@
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <h3 class="panel-title">Reguły</h3>
+  </div>
+  <div class="panel-body">
+    <table class="table">
+      <thead class="thead-inverse">
+      <tr>
+        <th>#</th>
+        <th>Treść</th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let rule of rules; let i = index">
+        <th scope="row" style="width: 10%;">{{i + 1}}</th>
+        <td>{{rule.value}}</td>
+        <td>
+          <a (click)="removeRule(rule)" class="pull-right remove-object">
+            <i class="glyphicon glyphicon-trash"></i>
+          </a>
+        </td>
+      </tr>
+
+      <a class="btn btn-primary" style="margin-top: 10px;" (click)="openAddRuleDialog()">Dodaj regułe</a><br />
+      </tbody>
+    </table>
+  </div>
+</div>

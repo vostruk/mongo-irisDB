@@ -1,0 +1,11 @@
+<h3 md-dialog-title style="min-width: 400px;">Dodaj regułę</h3>
+<div md-dialog-content>
+  <input
+    type="text"
+    class="form-control"
+    [(ngModel)] = "value">
+</div>
+<div md-dialog-actions class="pull-right">
+  <button class="btn btn-primary" style="margin-right: 10px;" [disabled] = "!canAddRule()" (click)="dialogRef.close(value)">Dodaj</button>
+  <button class="btn btn-warning" (click)="dialogRef.close()">Anuluj</button>
+</div>
