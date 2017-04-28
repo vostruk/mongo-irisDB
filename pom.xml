@@ -3,6 +3,13 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+        <distributionManagement>
+            <repository>
+                <id>internal.repo</id>
+                <name>Internal repo</name>
+                <url>file:///home/ostruk</url>
+            </repository>
+        </distributionManagement>
     <groupId>pl.eiti</groupId>
     <artifactId>zpdb_datalog</artifactId>
     <version>0.0.1-SNAPSHOT</version>
@@ -57,10 +64,87 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.deri.iris</groupId>
+            <artifactId>iris</artifactId>
+            <version>0.60</version>
+        </dependency>
+        <dependency>
+            <groupId>org.deri.iris</groupId>
+            <artifactId>iris-parser</artifactId>
+            <version>0.60</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jgrapht</groupId>
+            <artifactId>jgrapht</artifactId>
+            <version>0.9.1</version>
+        </dependency>
     </dependencies>
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.2.1</version>
+                <inherited>false</inherited>
+                <executions>
+                    <execution>
+                        <id>install-anet</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>mvn</executable>
+                            <arguments>
+                                <argument>install:install-file</argument>
+                                <argument>-Dfile=lib/iris-parser-0.60.jar</argument>
+                                <argument>-DgroupId=org.deri.iris</argument>
+                                <argument>-DartifactId=iris-parser</argument>
+                                <argument>-Dversion=0.60</argument>
+                                <argument>-Dpackaging=jar</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>install-jgraph</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>mvn</executable>
+                            <arguments>
+                                <argument>install:install-file</argument>
+                                <argument>-Dfile=lib/jgrapht-core-0.9.1.jar</argument>
+                                <argument>-DgroupId=org.jgrapht</argument>
+                                <argument>-DartifactId=jgrapht</argument>
+                                <argument>-Dversion=0.9.1</argument>
+                                <argument>-Dpackaging=jar</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                </executions>
+                <configuration>
+                    <executable>mvn</executable>
+                    <arguments>
+                        <argument>install:install-file</argument>
+                        <argument>-Dfile=lib/iris-0.60.jar</argument>
+                        <argument>-DgroupId=org.deri.iris</argument>
+                        <argument>-DartifactId=iris</argument>
+                        <argument>-Dversion=0.60</argument>
+                        <argument>-Dpackaging=jar</argument>
+                    </arguments>
+                </configuration>
+
+
+            </plugin>
+
+
+
+
             <!--<plugin>
                 <artifactId>maven-war-plugin</artifactId>
                 <version>3.0.0</version>
