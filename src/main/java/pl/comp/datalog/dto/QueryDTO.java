@@ -22,6 +22,9 @@ public class QueryDTO {
      * @param value New value of value.
      */
     public void setValue(String value) {
+        value = value.trim();
+        if(!value.startsWith("?-")) value = "?- " + value;
+        if(!value.endsWith(".")) value += ".";
         this.value = value;
     }
 

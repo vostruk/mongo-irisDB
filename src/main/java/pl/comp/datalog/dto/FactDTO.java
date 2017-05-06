@@ -56,6 +56,8 @@ public class FactDTO {
      * @param value New value of value.
      */
     public void setValue(String value) {
+        value = value.trim();
+        if(!value.endsWith(".")) value += ".";
         this.value = value;
     }
 }
