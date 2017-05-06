@@ -17,6 +17,7 @@ import org.deri.iris.api.terms.IVariable;
 import org.deri.iris.compiler.Parser;
 import org.deri.iris.optimisations.magicsets.MagicSets;
 import org.deri.iris.storage.IRelation;
+import pl.comp.datalog.dto.RuleDTO;
 import pl.comp.datalog.model.Fact;
 import pl.comp.datalog.model.Rule;
 
@@ -102,9 +103,9 @@ public class QueryRepositoryImpl implements QueryRepository {
         }
 
         List<String> result = new ArrayList<>();
-
-
-        String[] queries = query.getValue().substring(3).split("\\)");
+        //String[] queries = query.getValue().substring(3).split("\\)");
+        String rawQuery = query.getValue().split("\\?-")[1];
+        String[] queries = rawQuery.trim().split("\\)");
         boolean moreThanOne = false;
         for(String q : queries)
         {
@@ -128,7 +129,6 @@ public class QueryRepositoryImpl implements QueryRepository {
             moreThanOne = true;
         }
 
-
         return result;
     }
 
@@ -143,7 +143,7 @@ public class QueryRepositoryImpl implements QueryRepository {
             {
                 result.add(r);
 
-                String value = r.split(":- ")[1];
+                String value = r.split(":-")[1];
 
                 String[] parts = value.split("\\)");
                 boolean moreThanOne = false;
@@ -177,10 +177,11 @@ public class QueryRepositoryImpl implements QueryRepository {
     }
 
 
-    private String checkAlternative(QueryDTO query){
+    @Override
+    public QueryDTO resolve(QueryDTO query) {
+
         Parser parser = new Parser();
         Map<IPredicate, IRelation> factMap = new HashMap<>();
-        String s = "";
         List<String> factsAndRulesNamesList = parseQuery(query, getUniqueFactsName());
         List<String> allNeededToIris = findWithRegexAllNeededStrings(getUniqueValuesFromList(factsAndRulesNamesList));
         String ALLs  = String.join(" ", allNeededToIris);
@@ -192,24 +193,16 @@ public class QueryRepositoryImpl implements QueryRepository {
         List<IRule> rules = parser.getRules();
         try {
             parser.parse(ALLs);
-        } catch (ParserException e) {
-            e.printStackTrace();
-        }
-        factMap.putAll(parser.getFacts());
-
-        try {
+            factMap.putAll(parser.getFacts());
             parser.parse(query.getValue());
         } catch (ParserException e) {
             e.printStackTrace();
         }
         List<IQuery> queries = parser.getQueries();
         Configuration configuration = new Configuration();
-
-        // Enable Magic Sets together with rule filtering.
         configuration.programOptmimisers.add(new MagicSets());
-
-        // Create the knowledge base.
         IKnowledgeBase knowledgeBase = null;
+
         String res = "";
         try {
             knowledgeBase = new KnowledgeBase(factMap, rules, configuration);
@@ -219,11 +212,10 @@ public class QueryRepositoryImpl implements QueryRepository {
                 IRelation relation = knowledgeBase.execute(Inquery, variableBindings);
 
                 // Output the variable bindings.
-                s += "\n" + query.toString() + "\n" + variableBindings;
+                //s += "\n" + query.toString() + "\n" + variableBindings;
 
                 // Output each tuple in the relation, where the term at position i
-                // corresponds to the variable at position i in the variable
-                // bindings list.
+                // corresponds to the variable at position i in the variable bindings list.
                 for (int i = 0; i < relation.size(); i++) {
                     res+= relation.get(i);
                 }
@@ -233,81 +225,7 @@ public class QueryRepositoryImpl implements QueryRepository {
             e.printStackTrace();
         }
 
-        return res;
-    }
-
-    @Override
-    public QueryDTO resolve(QueryDTO query) {
-
-        Parser parser = new Parser();
-        Map<IPredicate, IRelation> factMap = new HashMap<>();
-
-
-        List<Fact> L = factRepository.findAll();
-        String s = L.stream().map(e -> e.getValue().toString()).reduce("", String::concat);
-        List<Rule> RL = ruleRepository.findAll();
-
-        String rs = RL.stream().map(e -> e.getValue().toString()).reduce("", String::concat);
-
-
-        try {
-            parser.parse(s);
-        } catch (ParserException e) {
-            e.printStackTrace();
-        }
-
-        // Retrieve the facts and put all of them in factMap
-        factMap.putAll(parser.getFacts());
-
-        try {
-            parser.parse(rs);
-        } catch (ParserException e) {
-            e.printStackTrace();
-        }
-        List<IRule> rules = parser.getRules();
-
-        try {
-            parser.parse(query.getValue());
-        } catch (ParserException e) {
-            e.printStackTrace();
-        }
-        List<IQuery> queries = parser.getQueries();
-        // Create a default configuration.
-        Configuration configuration = new Configuration();
-
-        // Enable Magic Sets together with rule filtering.
-        configuration.programOptmimisers.add(new MagicSets());
-
-        // Create the knowledge base.
-        IKnowledgeBase knowledgeBase = null;
-        String res = "";
-        try {
-            knowledgeBase = new KnowledgeBase(factMap, rules, configuration);
-            for (IQuery Inquery : queries) {
-
-                List<IVariable> variableBindings = new ArrayList<>();
-                IRelation relation = knowledgeBase.execute(Inquery, variableBindings);
-
-                // Output the variable bindings.
-                s += "\n" + query.toString() + "\n" + variableBindings;
-
-                // Output each tuple in the relation, where the term at position i
-                // corresponds to the variable at position i in the variable
-                // bindings list.
-                for (int i = 0; i < relation.size(); i++) {
-                    res+= relation.get(i);
-                }
-            }
-
-        } catch (EvaluationException e) {
-            e.printStackTrace();
-        }
-
-
-        String altRes = checkAlternative(query);
-        if(res!=altRes)
-          query.setResult("WYNIKI ROZNE!: normalny - " + res + " Nowy - " + altRes );
-        else query.setResult(altRes);
+        query.setResult(res);
         return query;
     }
 }
