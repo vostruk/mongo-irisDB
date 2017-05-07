@@ -2,7 +2,20 @@
 .remove-object {
   color: #6f6f6f;
 }
+
 .remove-object:hover {
   color: #000000;
   cursor: pointer;
+}
+
+accordion .panel-body {
+  padding: 0px;
+}
+
+accordion accordion-group .panel {
+  border-radius: 0px !important;
+}
+
+accordion accordion-group .panel .table{
+  margin-bottom: 0px;
 }
