@@ -12,6 +12,9 @@ import {MdDialog} from "@angular/material";
 export class FactsComponent implements OnInit {
 
   facts: Fact[] = [];
+  // factsMap: {name: string, facts: Fact[]}[] = [];
+  factsMap: Map<string, Fact[]> = new Map<string, Fact[]>();
+  factsNames: string[] = [];
   fact: Fact;
 
   constructor(private factsService: FactsService, public dialog: MdDialog) { }
@@ -19,14 +22,26 @@ export class FactsComponent implements OnInit {
   ngOnInit() {
     this.loadFacts();
     this.fact = null;
-    setInterval(() => {
-      this.loadFacts();
-    }, 5000);
   }
 
   loadFacts() {
     this.factsService.getFacts().then(
-      facts => this.facts = facts
+      facts => {
+        this.facts = facts;
+        this.factsMap = new Map<string, Fact[]>();
+        for (var fact of this.facts) {
+          let name = fact.value.slice(0, fact.value.indexOf("("));
+          if (this.factsMap.has(name)) {
+            this.factsMap.get(name).push(fact);
+          } else {
+            let factsList: Fact[] = [];
+            factsList.push(fact);
+            this.factsMap.set(name, factsList)
+          }
+        }
+
+        this.factsNames = Array.from(this.factsMap.keys());
+      }
     );
   }
 
@@ -51,4 +66,9 @@ export class FactsComponent implements OnInit {
       }
     });
   }
+
+  getGroupHeading(factName: string) {
+    return factName + " (" + this.factsMap.get(factName).length + ")";
+  }
 }
+

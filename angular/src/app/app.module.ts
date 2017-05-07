@@ -15,6 +15,7 @@ import { AddFactDialogComponent } from './facts/add-fact-dialog/add-fact-dialog.
 import { AddRuleDialogComponent } from './rules/add-rule-dialog/add-rule-dialog.component';
 import {RulesService} from "./shared/rules.service";
 import {QueriesService} from "./shared/queries.service";
+import {Accordion, AccordionGroup} from './facts/accordion';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,9 @@ import {QueriesService} from "./shared/queries.service";
     FactsComponent,
     QueriesComponent,
     AddFactDialogComponent,
-    AddRuleDialogComponent
+    AddRuleDialogComponent,
+    Accordion,
+    AccordionGroup
   ],
   entryComponents: [AddFactDialogComponent, AddRuleDialogComponent],
   imports: [
